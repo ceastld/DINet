@@ -19,3 +19,4 @@ dependencies:
     - scipy==1.5.4
     - tensorflow==1.15.2
     - gdown==4.6.0 
+    - protobuf==3.20.1

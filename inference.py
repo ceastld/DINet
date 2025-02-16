@@ -50,13 +50,13 @@ if __name__ == '__main__':
     ############################################## load facial landmark ##############################################
     print('loading facial landmarks from : {}'.format(opt.source_openface_landmark_path))
     if not os.path.exists(opt.source_openface_landmark_path):
-        raise ('wrong facial landmark path :{}'.format(opt.source_openface_landmark_path))
+        raise Exception("wrong facial landmark path :{}".format(opt.source_openface_landmark_path))
     video_landmark_data = load_landmark_openface(opt.source_openface_landmark_path).astype(np.int)
     ############################################## align frame with driving audio ##############################################
     print('aligning frames with driving audio')
     video_frame_path_list = glob.glob(os.path.join(video_frame_dir, '*.jpg'))
     if len(video_frame_path_list) != video_landmark_data.shape[0]:
-        raise ('video frames are misaligned with detected landmarks')
+        raise Exception("video frames are misaligned with detected landmarks")
     video_frame_path_list.sort()
     video_frame_path_list_cycle = video_frame_path_list + video_frame_path_list[::-1]
     video_landmark_data_cycle = np.concatenate([video_landmark_data, np.flip(video_landmark_data, 0)], 0)

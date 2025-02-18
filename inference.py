@@ -11,7 +11,7 @@ import torch
 import subprocess
 import random
 from collections import OrderedDict
-
+from tqdm import tqdm
 def extract_frames_from_video(video_path,save_dir):
     videoCapture = cv2.VideoCapture(video_path)
     fps = videoCapture.get(cv2.CAP_PROP_FPS)
@@ -122,8 +122,7 @@ if __name__ == '__main__':
         os.remove(res_face_path)
     videowriter = cv2.VideoWriter(res_video_path, cv2.VideoWriter_fourcc(*'XVID'), 25, video_size)
     videowriter_face = cv2.VideoWriter(res_face_path, cv2.VideoWriter_fourcc(*'XVID'), 25, (resize_w, resize_h))
-    for clip_end_index in range(5, pad_length, 1):
-        print('synthesizing {}/{} frame'.format(clip_end_index - 5, pad_length - 5))
+    for clip_end_index in tqdm(range(5, pad_length, 1), desc="Synthesizing frames"):
         crop_flag, crop_radius = compute_crop_radius(video_size,res_video_landmark_data_pad[clip_end_index - 5:clip_end_index, :, :],random_scale = 1.05)
         if not crop_flag:
             raise ('our method can not handle videos with large change of facial size!!')
@@ -164,10 +163,4 @@ if __name__ == '__main__':
         opt.driving_audio_path,
         video_add_audio_path)
     subprocess.call(cmd, shell=True)
-
-
-
-
-
-
 
